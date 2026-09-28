@@ -5,48 +5,47 @@ app = marimo.App(width="medium")
 
 
 @app.cell
-def __():
+def _():
     import marimo as mo
     import numpy as np
     import matplotlib.pyplot as plt
     from scipy.integrate import solve_ivp
+
     return mo, np, plt, solve_ivp
 
 
-@app.cell
-def __(mo):
-    mo.md(
-        r"""
-        # Week 1 — Single-Species Tumor Growth (Ch. 4)
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Week 1 — Single-Species Tumor Growth (Ch. 4)
 
-        Two classic models describe how a tumor grows toward a carrying capacity $K$:
+    Two classic models describe how a tumor grows toward a carrying capacity $K$:
 
-        **Logistic** (Eq 4.3):
-        $$\frac{dW}{dt} = aW\!\left(1 - \frac{W}{K}\right)$$
+    **Logistic** (Eq 4.3):
+    $$\frac{dW}{dt} = aW\!\left(1 - \frac{W}{K}\right)$$
 
-        **Gompertz** (Eq 4.6):
-        $$\frac{dW}{dt} = aW - bW\ln W$$
+    **Gompertz** (Eq 4.6):
+    $$\frac{dW}{dt} = aW - bW\ln W$$
 
-        Both produce S-shaped curves, but Gompertz decelerates *earlier* — it better fits
-        observed tumor data because large tumors slow down faster than logistic predicts.
+    Both produce S-shaped curves, but Gompertz decelerates *earlier* — it better fits
+    observed tumor data because large tumors slow down faster than logistic predicts.
 
-        Set $b = a / \ln K$ so both models share the same asymptote $K$.
-        """
-    )
+    Set $b = a / \ln K$ so both models share the same asymptote $K$.
+    """)
     return
 
 
 @app.cell
-def __(mo):
+def _(mo):
     a_slider = mo.ui.slider(0.1, 2.0, value=0.5, step=0.05, label="Growth rate $a$")
     K_slider = mo.ui.slider(50, 2000, value=500, step=50, label="Carrying capacity $K$")
     W0_slider = mo.ui.slider(1, 50, value=5, step=1, label="Initial size $W_0$")
     mo.vstack([a_slider, K_slider, W0_slider])
-    return a_slider, K_slider, W0_slider
+    return K_slider, W0_slider, a_slider
 
 
 @app.cell
-def __(a_slider, K_slider, W0_slider, np, plt, solve_ivp):
+def _(K_slider, W0_slider, a_slider, np, plt, solve_ivp):
     a = a_slider.value
     K = K_slider.value
     W0 = W0_slider.value
@@ -79,22 +78,20 @@ def __(a_slider, K_slider, W0_slider, np, plt, solve_ivp):
     return
 
 
-@app.cell
-def __(mo):
-    mo.md(
-        r"""
-        ## Things to notice
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Things to notice
 
-        - With small $W_0$, both curves look exponential early on — the carrying capacity
-          doesn't matter until the tumor is large.
-        - Increase $a$: both curves rise faster but still saturate at $K$.
-        - The Gompertz curve always bends away from the logistic *before* $K/2$.
-          That's the signature of early deceleration.
+    - With small $W_0$, both curves look exponential early on — the carrying capacity
+      doesn't matter until the tumor is large.
+    - Increase $a$: both curves rise faster but still saturate at $K$.
+    - The Gompertz curve always bends away from the logistic *before* $K/2$.
+      That's the signature of early deceleration.
 
-        **Question to think about**: if you only had a few data points from a growing tumor,
-        could you tell which model fits better?  What would you need?
-        """
-    )
+    **Question to think about**: if you only had a few data points from a growing tumor,
+    could you tell which model fits better?  What would you need?
+    """)
     return
 
 

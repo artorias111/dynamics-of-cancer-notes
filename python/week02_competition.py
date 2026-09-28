@@ -5,37 +5,36 @@ app = marimo.App(width="medium")
 
 
 @app.cell
-def __():
+def _():
     import marimo as mo
     import numpy as np
     import matplotlib.pyplot as plt
     from scipy.integrate import solve_ivp
+
     return mo, np, plt, solve_ivp
 
 
-@app.cell
-def __(mo):
-    mo.md(
-        r"""
-        # Week 2 — Two-Species Competition (Ch. 5)
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    # Week 2 — Two-Species Competition (Ch. 5)
 
-        Two clones compete for the same resource (e.g. space, oxygen):
+    Two clones compete for the same resource (e.g. space, oxygen):
 
-        $$\frac{dx_1}{dt} = x_1\bigl(r_1 - a_{11}x_1 - a_{12}x_2\bigr)$$
-        $$\frac{dx_2}{dt} = x_2\bigl(r_2 - a_{21}x_1 - a_{22}x_2\bigr)$$
+    $$\frac{dx_1}{dt} = x_1\bigl(r_1 - a_{11}x_1 - a_{12}x_2\bigr)$$
+    $$\frac{dx_2}{dt} = x_2\bigl(r_2 - a_{21}x_1 - a_{22}x_2\bigr)$$
 
-        $a_{ii}$ = self-suppression (intraspecific), $a_{ij}$ = cross-suppression (interspecific).
+    $a_{ii}$ = self-suppression (intraspecific), $a_{ij}$ = cross-suppression (interspecific).
 
-        **Competitive exclusion**: if one clone suppresses the other more than it suppresses
-        itself, co-existence is unstable — one clone drives the other extinct.
-        That is exactly what happens during clonal selection in a tumour.
-        """
-    )
+    **Competitive exclusion**: if one clone suppresses the other more than it suppresses
+    itself, co-existence is unstable — one clone drives the other extinct.
+    That is exactly what happens during clonal selection in a tumour.
+    """)
     return
 
 
 @app.cell
-def __(mo):
+def _(mo):
     r1_s = mo.ui.slider(0.5, 3.0, value=1.0, step=0.1, label="$r_1$ (clone 1 growth rate)")
     r2_s = mo.ui.slider(0.5, 3.0, value=1.2, step=0.1, label="$r_2$ (clone 2 growth rate)")
     a12_s = mo.ui.slider(0.1, 2.0, value=0.8, step=0.1, label="$a_{12}$ (clone 2 suppresses clone 1)")
@@ -45,7 +44,7 @@ def __(mo):
 
 
 @app.cell
-def __(a12_s, a21_s, mo, np, plt, r1_s, r2_s, solve_ivp):
+def _(a12_s, a21_s, mo, np, plt, r1_s, r2_s, solve_ivp):
     r1, r2 = r1_s.value, r2_s.value
     a11, a22 = 1.0, 1.0
     a12, a21 = a12_s.value, a21_s.value
@@ -102,22 +101,20 @@ def __(a12_s, a21_s, mo, np, plt, r1_s, r2_s, solve_ivp):
     return
 
 
-@app.cell
-def __(mo):
-    mo.md(
-        r"""
-        ## Things to notice
+@app.cell(hide_code=True)
+def _(mo):
+    mo.md(r"""
+    ## Things to notice
 
-        - The nullclines (dashed) divide the phase space.  Where they cross is an equilibrium.
-        - If $a_{12} > r_1/r_2$ **and** $a_{21} > r_2/r_1$: both clones try to exclude each other
-          → *bistability* (which clone wins depends on starting point).
-        - If cross-suppression is weak relative to self-suppression: stable coexistence is possible.
-        - Try $r_2 > r_1$ with weak $a_{21}$: clone 2 takes over regardless of starting conditions.
+    - The nullclines (dashed) divide the phase space.  Where they cross is an equilibrium.
+    - If $a_{12} > r_1/r_2$ **and** $a_{21} > r_2/r_1$: both clones try to exclude each other
+      → *bistability* (which clone wins depends on starting point).
+    - If cross-suppression is weak relative to self-suppression: stable coexistence is possible.
+    - Try $r_2 > r_1$ with weak $a_{21}$: clone 2 takes over regardless of starting conditions.
 
-        **Cancer relevance**: a fitter mutant clone (higher $r$, lower self-suppression) will
-        reliably outcompete normal tissue — the maths makes that inevitable.
-        """
-    )
+    **Cancer relevance**: a fitter mutant clone (higher $r$, lower self-suppression) will
+    reliably outcompete normal tissue — the maths makes that inevitable.
+    """)
     return
 
 
